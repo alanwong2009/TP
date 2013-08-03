@@ -1,0 +1,315 @@
+<HTML>
+<HEAD>
+<p>Alan Wong
+<p>0847623
+<p>gl1197
+<SCRIPT LANGUAGE="VBScript">
+<!--
+Sub Validation_onClick
+Dim A3Form
+Dim sumof, err_count, s0, entrynum, glc, point, fred
+Set A3Form = Document.VForm
+
+sumof=cDbl(0)
+err_count=0
+s0=0
+
+A3Form.MsgWin.value = " "
+
+if len  (A3Form.fiscal.value) <> 0 then
+  if IsNumeric(A3Form.fiscal.value) = 0 then
+    err_count=err_count+1
+      A3Form.MsgWin.value = A3Form.MsgWin.value + chr(13) +chr(10) + cStr(err_count) + ". Fiscal Month Must be Numeric"
+  else
+    if A3Form.fiscal.value < 1 OR A3Form.fiscal.value > 12 then
+       err_count=err_count+1
+      A3Form.MsgWin.value = A3Form.MsgWin.value + chr(13) +chr(10) + cStr(err_count) + ". Fiscal Month must be 1,2,3,...,12"
+    else
+
+    end if
+ end if
+else
+  err_count=err_count+1
+  A3Form.MsgWin.value = A3Form.MsgWin.value + chr(13) +chr(10) + cStr(err_count) + ". Must Enter a Fiscal Month"
+end if
+
+if len(A3Form.sourceref.value) <> 4 then
+    err_count=err_count+1
+   A3Form.MsgWin.value = A3Form.MsgWin.value + chr(13) +chr(10) + cStr(err_count) + ". Source Ref. Number Must be 4 digits"
+else
+    if IsNumeric(A3Form.sourceref.value) = 0 then
+         err_count=err_count+1
+        A3Form.MsgWin.value = A3Form.MsgWin.value + chr(13) +chr(10) + cStr(err_count) + ". Source Ref. Number must be numbers ONLY"
+    else
+
+    end if
+end if
+
+A3Form.numvalid.value = 0
+for entrynum = 1 to 7
+ s0=0
+ point = entrynum * 6 - 4
+ for glc = 0 to 3
+   fred = A3Form.elements(point+glc).value
+   if len  (fred) <> 0 then
+     s0=1
+     if IsNumeric(fred) = 0 then
+      err_count=err_count+1
+      if glc=0 then A3Form.MsgWin.value = A3Form.MsgWin.value + chr(13) +chr(10) + cStr(err_count) + ". Major on Journal Entry " + e_str + " must be numeric"
+      if glc=1 then A3Form.MsgWin.value = A3Form.MsgWin.value + chr(13) +chr(10) + cStr(err_count) + ". Minor on Journal Entry " + e_str + " must be numeric"
+      if glc=2 then A3Form.MsgWin.value =A3Form.MsgWin.value + chr(13) +chr(10) + cStr(err_count) + ". Sub1 on Journal Entry " + e_str + " must be numeric"
+      if glc=3 then  A3Form.MsgWin.value =A3Form.MsgWin.value + chr(13) +chr(10) + cStr(err_count) + ". Sub2 on Journal Entry " + e_str + " must be numeric"
+    else
+       A3Form.elements(point+glc).value= makefour(fred)
+       fred= A3Form.elements(point+glc).value
+    end if
+  else
+      if s0=1 then
+            A3Form.elements(point+glc).value="0000"
+       end if
+end if
+next
+
+    fred=A3Form.elements(point+4).value
+
+if s0  > 0 and len  (fred) <> 0 then
+       if IsNumeric(fred) = 0 then
+          err_count=err_count+1
+         A3Form.MsgWin.value =A3Form.MsgWin.value + chr(13) +chr(10) + cStr(err_count) + ". Transaction Amount" + " on entry " + e_str + " must be numeric"
+      else
+        A3Form.elements(point+4).value= roundit(fred)
+         sumof=sumof + A3Form.elements(point+4).value
+         s0=2
+       end if
+else
+  if s0  > 0 and len  (fred) = 0 then
+    err_count=err_count+1
+   A3Form.MsgWin.value = A3Form.MsgWin.value + chr(13) +chr(10) + cStr(err_count) + ". Valid Account " + "on entry " + e_str+ " must have a Transaction Amount"
+  else
+     if s0  = 0 and len  (fred) <> 0 then
+       err_count=err_count+1
+      A3Form.MsgWin.value = A3Form.MsgWin.value + chr(13) +chr(10) + cStr(err_count) + ". Trans. Amt " +"on entry " + e_str +" must have a Valid GL Account Number"
+     end if
+  end if
+end if
+
+if s0=2 then A3Form.numvalid.value = A3Form.numvalid.value + 1
+
+
+next
+
+A3Form.sumofamt.value = sumof
+if sumof < 0.01 then
+ if sumof > 0 then
+	sumof = 0
+ else
+	sumof=sumof
+ end if
+end if
+
+if sumof > -0.01 then
+ if sumof < 0 then
+	sumof = 0
+  else
+	sumof=sumof
+ end if
+end if
+
+ if sumof <> 0 then
+    err_count=err_count+1
+    A3Form.MsgWin.value = A3Form.MsgWin.value + chr(13) +chr(10) + cStr(err_count) + ". Sum of Transaction Amounts not zero"
+ end if
+if cInt(A3Form.numvalid.value) < 2 then
+   err_count=err_count+1
+   A3Form.MsgWin.value = A3Form.MsgWin.value + chr(13) +chr(10) + cStr(err_count) + ". " + cStr(A3Form.numvalid.value) + " valid entries. Must have 2 or more valid entries"
+end if
+if sumof = 0 AND err_count = 0 then
+  A3Form.MsgWin.value= "Finished Validation: Found: "+ cStr(A3Form.numvalid.value)+"  valid entries; No Errors."+chr(13)+chr(10) +"Submitting the Journal Voucher for Processing"
+   A3Form.submit
+else
+  A3Form.MsgWin.value = "Finished Validation: Found: "+ cStr(A3Form.numvalid.value) +" valid entries; "+ cStr(err_count) + " Error(s) Detected:" + A3Form.MsgWin.value
+end if
+end sub
+
+Function makefour(afield)
+dim length_of_afield
+length_of_afield=len(afield)
+if length_of_afield = 4 then makefour=afield
+if length_of_afield = 3 then makefour="0"&cStr(afield)
+if length_of_afield = 2 then makefour="00"&cStr(afield)
+if length_of_afield = 1 then makefour="000"&cStr(afield)
+End Function
+
+Function Roundit(afield)
+dim bfield
+bfield=afield
+bfield=cDbl(bfield)*100
+bfield=cLng(bfield)
+bfield=cDbl(bfield)
+roundit=bfield/100
+End Function
+
+-->
+</SCRIPT>
+</HEAD>
+<BODY bgcolor="#888888" text="#ffffff">
+<center><img src="captsm.gif">
+<OBJECT ID="Label1" WIDTH=312 HEIGHT=88
+ CLASSID="CLSID:978C9E23-D4B0-11CE-BF2D-00AA003F40D0">
+    <PARAM NAME="ForeColor" VALUE="16777215">
+    <PARAM NAME="BackColor" VALUE="8421504">
+    <PARAM NAME="Caption" VALUE="Captain Webb's Explorations Ltd.">
+    <PARAM NAME="Size" VALUE="5503;1552">
+    <PARAM NAME="BorderColor" VALUE="16711680">
+    <PARAM NAME="BorderStyle" VALUE="0">
+    <PARAM NAME="FontName" VALUE="AdLib BT">
+    <PARAM NAME="FontHeight" VALUE="320">
+    <PARAM NAME="FontCharSet" VALUE="0">
+    <PARAM NAME="FontPitchAndFamily" VALUE="2">
+    <PARAM NAME="ParagraphAlign" VALUE="3">
+    <PARAM NAME="FontWeight" VALUE="0">
+</OBJECT>
+<p>
+<OBJECT ID="Label1" WIDTH=344 HEIGHT=40
+ CLASSID="CLSID:978C9E23-D4B0-11CE-BF2D-00AA003F40D0">
+    <PARAM NAME="ForeColor" VALUE="16777215">
+    <PARAM NAME="BackColor" VALUE="8421504">
+    <PARAM NAME="Caption" VALUE="Enter A Journal Voucher">
+    <PARAM NAME="Size" VALUE="6045;683">
+    <PARAM NAME="BorderColor" VALUE="16711680">
+    <PARAM NAME="FontName" VALUE="AdLib BT">
+    <PARAM NAME="FontHeight" VALUE="240">
+    <PARAM NAME="FontCharSet" VALUE="0">
+    <PARAM NAME="FontPitchAndFamily" VALUE="2">
+    <PARAM NAME="ParagraphAlign" VALUE="3">
+    <PARAM NAME="FontWeight" VALUE="0">
+</OBJECT>
+<table border="2" width="100%">
+<tr>
+<td colspan="4">
+
+<FORM name="VForm" method="POST" action="a3.asp">
+FISCAL MONTH
+<input type=text name="fiscal" size="2" maxlength="2"></td>
+<td colspan="2">
+SOURCE REFERENCE NUMBER
+<input type=text name="sourceref" size="4" maxlength="4"></td>
+</tr>
+<tr><td width="75">
+MAJOR
+</td>
+<td width="75">
+MINOR
+</td>
+<td width="75">
+SUB 1
+</td>
+<td width="75">
+SUB 2
+</td>
+<td width="145">
+<center>
+TRANSACTION<BR>AMOUNT
+</center>
+<li>Enter a decimal point
+<li>Use a minus for credits
+</td>
+<td>
+JOURNAL ENTRY DESCRIPTION
+</td>
+</tr>
+<tr>
+<td><input type = text name="a0001field" size="4" maxlength="4"></td>
+<td><input type = text name="a0002field" size="4" maxlength="4"></td>
+<td><input type = text name="a0003field" size="4" maxlength="4"></td>
+<td><input type = text name="a0004field" size="4" maxlength="4"></td>
+<td><input type = text name="a0005field" size="15" maxlength="20"></td>
+<td><input type = text name="com00" size="30" maxlength="50"></td>
+</tr>
+<tr>
+<td><input type = text name="a0011field" size="4" maxlength="4"></td>
+<td><input type = text name="a0012field" size="4" maxlength="4"></td>
+<td><input type = text name="a0013field" size="4" maxlength="4"></td>
+<td><input type = text name="a0014field" size="4" maxlength="4"></td>
+<td><input type = text name="a0015field" size="15" maxlength="20"></td>
+<td><input type = text name="com01" size="30" maxlength="50"></td>
+</tr>
+<tr>
+<td><input type = text name="a0021field" size="4" maxlength="4"></td>
+<td><input type = text name="a0022field" size="4" maxlength="4"></td>
+<td><input type = text name="a0023field" size="4" maxlength="4"></td>
+<td><input type = text name="a0024field" size="4" maxlength="4"></td>
+<td><input type = text name="a0025field" size="15" maxlength="20"></td>
+<td><input type = text name="com02" size="30" maxlength="50"></td>
+</tr>
+<tr>
+<td><input type = text name="a0031field" size="4" maxlength="4"></td>
+<td><input type = text name="a0032field" size="4" maxlength="4"></td>
+<td><input type = text name="a0033field" size="4" maxlength="4"></td>
+<td><input type = text name="a0034field" size="4" maxlength="4"></td>
+<td><input type = text name="a0035field" size="15" maxlength="20"></td>
+<td><input type = text name="com03" size="30" maxlength="50"></td>
+</tr>
+<tr>
+<td><input type = text name="a0041field" size="4" maxlength="4"></td>
+<td><input type = text name="a0042field" size="4" maxlength="4"></td>
+<td><input type = text name="a0043field" size="4" maxlength="4"></td>
+<td><input type = text name="a0044field" size="4" maxlength="4"></td>
+<td><input type = text name="a0045field" size="15" maxlength="20"></td>
+<td><input type = text name="com04" size="30" maxlength="50"></td>
+</tr>
+<tr>
+<td><input type = text name="a0051field" size="4" maxlength="4"></td>
+<td><input type = text name="a0052field" size="4" maxlength="4"></td>
+<td><input type = text name="a0053field" size="4" maxlength="4"></td>
+<td><input type = text name="a0054field" size="4" maxlength="4"></td>
+<td><input type = text name="a0055field" size="15" maxlength="20"></td>
+<td><input type = text name="com05" size="30" maxlength="50"></td>
+</tr>
+<tr>
+<td><input type = text name="a0061field" size="4" maxlength="4"></td>
+<td><input type = text name="a0062field" size="4" maxlength="4"></td>
+<td><input type = text name="a0063field" size="4" maxlength="4"></td>
+<td><input type = text name="a0064field" size="4" maxlength="4"></td>
+<td><input type = text name="a0065field" size="15" maxlength="20"></td>
+<td><input type = text name="com06" size="30" maxlength="50">
+</td>
+</tr>
+<tr>
+<td colspan="4">
+SUM OF AMOUNTS (Should be 0)
+</td>
+<td>
+<input type=text name="sumofamt" size="15">
+<input type="hidden" value="0" name="numvalid">
+</td>
+<td></td>
+</tr>
+
+<tr><td colspan="6">
+<textarea rows="4" cols="80" name="MsgWin">Enter the data above then click the button below</textarea>
+</td>
+</tr>
+
+<tr>
+<td colspan="6" bgcolor="#888888"><center>
+<INPUT TYPE="button"  name="Validation" value="Validate, Then Submit"></center></td></tr>
+</form>
+</table>
+</center>
+</BODY>
+</HTML>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

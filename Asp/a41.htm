@@ -1,0 +1,77 @@
+<HTML>
+<HEAD>
+
+<SCRIPT LANGUAGE="VBScript"> 
+<!--
+Sub GoBackBut_OnClick
+
+window.location.href="http://disc-nt.cba.uh.edu/Students/gl1197/index.htm"
+
+end sub
+
+sub validate
+
+if document.poop.acctdesc.value="" then
+document.poop.acctdesc.value=chr(39)+"No Description Entered"+chr(39)
+end if
+
+end sub
+-->
+</script>
+</HEAD>
+<p>Alan Wong
+<p>0847623
+<p>gl1197
+<body  bgcolor="#808080" link="#ffffff" text="#ffffff" vlink="#ffffff">
+<table border="2" width="95%" cellspacing="0" cellpadding="0">
+<tr>
+<td colspan="6">
+<center>
+<br>
+<font face="COMIC SANS MS,HELVETICA,ARIAL" size="2">ADD GL ACCOUNT
+</center> 
+</td>
+</tr>
+
+<tr>
+<td><font face="COMIC SANS MS,HELVETICA,ARIAL" size="2">   
+MAJOR
+</td>
+<td><font face="COMIC SANS MS,HELVETICA,ARIAL" size="2">    
+MINOR
+</td>
+<td><font face="COMIC SANS MS,HELVETICA,ARIAL" size="2">   
+SUB 1
+</td>
+<td><font face="COMIC SANS MS,HELVETICA,ARIAL" size="2">    
+SUB 2
+</td>
+<td><font face="COMIC SANS MS,HELVETICA,ARIAL" size="2">
+ACCOUNT DESCRIPTION
+</td>
+<td><font face="COMIC SANS MS,HELVETICA,ARIAL" size="2">
+BALANCE
+</td>
+</tr>
+
+<!'**************** Get Add Data -- 1st HTML>
+<tr>
+<td>
+<FORM name="poop" METHOD="POST" ACTION="a41.asp"> 
+<INPUT TYPE ="TEXT" NAME="major" size="4" maxlength="4"></td><td>
+<INPUT TYPE ="TEXT" NAME="minor" size="4" maxlength="4"></td><td>
+<INPUT TYPE ="TEXT" NAME="sub1" size="4" maxlength="4"></td><td>
+<INPUT TYPE ="TEXT" NAME="sub2" size="4" maxlength="4"></td><td>
+<INPUT TYPE ="TEXT" NAME="acctdesc" size="40" maxlength="50"></td>
+<td align="right">0.00</td>
+</tr>
+<tr><td colspan="6"> <br><center>
+<INPUT TYPE="SUBMIT" NAME="sbutton"  VALUE="Add Account" onClick="validate">
+<INPUT TYPE="HIDDEN" NAME="UserChoiceToken" VALUE="Add"></center> 
+</FORM>
+</td>
+</tr>
+
+</table>
+</BODY>
+</HTML>

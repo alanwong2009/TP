@@ -1,0 +1,306 @@
+<html>
+<body>
+<script language="vbscript">
+<!---
+sub zoop
+cc=1
+c_num = 0
+Dim roop(6)
+dim soop(6)
+condition = "true"
+srn = document.goop.srn.value
+fmonth = document.goop.fmonth.value
+total = 0
+for i=0 to 5
+	for j=0 to 5
+		soop(j)=document.GetElementsByName("poop"+cstr(cc))(0).value
+		cc=cc+1
+		if soop(j) = "" then
+			c_num = c_num
+		else
+			c_num = c_num + 1
+		end if
+	next
+		roop(i)=join(soop)
+next
+'
+'check SRN
+'
+if ((IsNumeric(srn) = false) or (len(srn) <> 4)) then
+	alert("Invalid SRN")
+	condition = "false"
+else
+	document.goop.srn.value = srn
+end if
+'
+'check Fiscal Month
+'
+if (IsNumeric(fmonth) = true) then
+	if((fmonth > 12) or (fmonth < 1)) then
+		alert("Invalid Number For Fiscal Month")
+		condition = "false"
+	else
+		document.goop.fmonth.value = fmonth
+	end if
+else
+	alert("Invalid Input For Fiscal Month")
+end if
+'
+'check if entry is over 6
+'
+if ((c_num)\5) < 2 then
+	alert("Need at least 2 Journal Entries")
+	condition = "false"
+end if
+'
+'execute the following if SRN + Fiscal Month is true
+'
+if condition = "true" then
+	'
+	'check major, minor, sub1, sub2
+	'
+	xml_string="<journalvoucher><srn>" + srn + "</srn>"+"<fmonth>"+ fmonth + "</fmonth>"
+		for i=0 to (c_num\6)
+			element = split(roop(i)," ")
+			major = element(0)
+			minor = element(1)
+			sub1 = element(2)
+			sub2 = element(3)
+			ta = element(4)
+			description = element(5)
+'
+'add 0's to the major
+'
+			if IsNumeric(major) = true then
+				if 	len(major) = 1 then
+					major = "000" + major
+						if major = "0000" then
+							alert("Thou shall not have an account with all 0's")
+							condition = "false"
+						end if
+				elseIf len(major) = 2 then
+					major = "00" + major
+						if major = "0000" then
+							alert("Thou shall not have an account with all 0's")
+							condition = "false"
+						end if
+				elseIf len(major) = 3 then
+					major = "0" + major
+						if major = "0000" then
+							alert("Thou shall not have an account with all 0's")
+							condition = "false"
+						end if
+				elseIf len(major) = 4 then
+					major = major
+						if major = "0000" then
+							alert("Thou shall not have an account with all 0's")
+							condition = "false"
+						end if
+				else
+					alert("Invalid Major")
+					condition = "false"
+				end if
+			else
+				alert("Only Numbers are Allowed in the Major Field")
+				condition = "false"
+			end if		
+'
+'add 0's to the minor
+'
+			if IsNumeric(minor) = true then
+				if len(minor) = 1 then
+					minor = "000" + minor
+						if minor = "0000" then
+							alert("Thou shall not have an account with all 0's")
+							condition = "false"
+						end if
+				elseif len(minor) = 2 then
+					minor = "00" + minor
+						if minor = "0000" then
+							alert("Thou shall not have an account with all 0's")
+							condition = "false"
+						end if
+				elseif len(minor) = 3 then
+					minor = "0" + minor
+						if minor = "0000" then
+							alert("Thou shall not have an account with all 0's")
+							condition = "false"
+						end if
+				elseif len(minor) = 4 then
+					minor = minor
+				else
+					alert("Too many digits in Minor")
+					condition = "false"
+				end if
+			else
+				alert("Only Numbers are allowed in the Minor Field")
+				condition = "false"
+			end if
+'
+'add 0's to the sub1
+'
+			if IsNumeric(sub1) = true then 
+				if len(sub1) = 1 then
+					sub1 = "000" + sub1
+						if sub1 = "0000" then
+							alert("Thou shall not have an account with all 0's")
+							condition = "false"
+						end if
+				elseif len(sub1) = 2 then
+					sub1 = "00" + sub1
+						if sub1 = "0000" then
+							alert("Thou shall not have an account with all 0's")
+							condition = "false"
+						end if
+				elseif len(sub1) = 3 then
+					sub1 = "0" + sub1
+						if sub1 = "0000" then
+							alert("Thou shall not have an account with all 0's")
+							condition = "false"
+						end if
+				elseif len(sub1) = 4 then
+					sub1 = sub1
+				else
+					alert("Too many digits in sub1")
+					condition = "false"
+				end if
+			else
+				alert("Only Numbers are allowed in the Minor Field")
+				condition = "false"
+			end if
+'
+'add 0's to the sub2
+'
+			if IsNumeric(sub2) = true then
+				if len(sub2) = 1 then
+					sub2 = "000" + sub2
+						if sub2 = "0000" then
+							alert("Thou shall not have an account with all 0's")
+							condition = "false"
+						end if
+				elseif len(sub2) = 2 then
+					sub2 = "00" + sub2
+						if sub1 = "0000" then
+							alert("Thou shall not have an account with all 0's")
+							condition = "false"
+						end if
+				elseif len(sub2) = 3 then
+					sub2 = "0" + sub2
+						if sub1 = "0000" then
+							alert("Thou shall not have an account with all 0's")
+							condition = "false"
+						end if
+				elseif len(sub2) = 4 then
+					sub2 = sub2
+				else
+					alert("Too many digits in sub2")
+					condition = "false"
+				end if
+			else
+				alert("You is wrong")
+				condition = "false"
+			end if
+			
+			if IsNumeric(ta) then
+				ta = FormatCurrency(ta,2)
+				total = total + ta
+			else
+				alert("Invalid Transaction Amount. There must be a number")
+				condition = "false"
+			end if
+		
+			if condition = "true" then
+				xml_string = xml_string + "<je><major>" + major + "</major><minor>" + minor + "</minor><sub1>" + sub1 + "</sub1><sub2>"+ sub2 +"</sub2><ta>" + ta + "</ta><desc>" + description + "</desc></je>"
+			end if
+		next
+			xml_string = xml_string+ "</journalvoucher>"
+			document.goop.total.value = total
+end if
+if total <> 0 then
+	alert("Your Sum of Transaction Amounts must Equal to 0")
+	condition = "false"
+end if
+
+	document.xmlform.xmlout.value=xml_string
+if condition = "true" then
+	document.xmlform.submit()
+end if
+
+end sub
+
+<---
+</script>
+<form name="goop">
+<table border="1">
+<tr><td colspan="6" align="center"><b>Journal Voucher</td></tr>
+<tr><td colspan="4"><b>SRN:</b><input type="text" name ="srn" size="4"> (4 digits)</td><td colspan="2"><b>Fiscal Month: <input type="text" name="fmonth" size="2"> Must be 1,2,3,...12</td></tr>
+<tr><td colspan="6" align="center"><b>Journal Entries</td></tr>
+<tr><td colspan="4"><b><center>General Ledger Account Number</center></td>
+<td align="center" rowspan="2"><b>Transaction<br>Amount</td>
+<td  align="center" rowspan="2"><b>Description (max. 50 characters)</td>
+</tr>
+<tr>
+<td  align="center" ><b>Major</td><td  align="center" ><b>Minor</td><td  align="center" ><b>Sub<br>Acct 1</td><td  align="center" ><b>Sub<br>Acct 2</td>
+</tr>
+<tr>
+<td><input type="text" name="poop1" size="4"></td>
+<td><input type="text" name="poop2" size="4"></td>
+<td><input type="text" name="poop3" size="4"></td>
+<td><input type="text" name="poop4" size="4"></td>
+<td align="right"><input type="text" name="poop5" size="12" align="right"></td>
+<td><input type="text" name="poop6" size="50"></td>
+</tr>
+<tr>
+<td><input type="text" name="poop7" size="4"></td>
+<td><input type="text" name="poop8" size="4"></td>
+<td><input type="text" name="poop9" size="4"></td>
+<td><input type="text" name="poop10" size="4"></td>
+<td align="right"><input type="text" name="poop11" size="12" align="right"></td>
+<td><input type="text" name="poop12" size="50"></td>
+</tr>
+
+<tr>
+<td><input type="text" name="poop13" size="4"></td>
+<td><input type="text" name="poop14" size="4"></td>
+<td><input type="text" name="poop15"size="4"></td>
+<td><input type="text" name="poop16"size="4"></td>
+<td align="right"><input type="text" name="poop17" size="12"></td>
+<td><input type="text" name="poop18" size="50"></td>
+</tr>
+
+<tr>
+<td><input type="text" name="poop19" size="4"></td>
+<td><input type="text" name="poop20" size="4"></td>
+<td><input type="text" name="poop21" size="4"></td>
+<td><input type="text" name="poop22" size="4"></td>
+<td align="right"><input type="text" name="poop23" size="12"></td>
+<td><input type="text" name="poop24" size="50"></td>
+</tr>
+
+<tr>
+<td><input type="text" name="poop25" size="4"></td>
+<td><input type="text" name="poop26" size="4"></td>
+<td><input type="text" name="poop27" size="4"></td>
+<td><input type="text" name="poop28" size="4"></td>
+<td align="right"><input type="text" name="poop29" size="12"></td>
+<td><input type="text" name="poop30" size="50"></td>
+</tr>
+
+<tr>
+<td><input type="text" name="poop31" size="4"></td>
+<td><input type="text" name="poop32" size="4"></td>
+<td><input type="text" name="poop33" size="4"></td>
+<td><input type="text" name="poop34" size="4"></td>
+<td align="right"><input type="text" name="poop35" size="12"></td>
+<td><input type="text" name="poop36" size="50"></td>
+</tr>
+<tr>
+<td colspan="4"><b>Sum of Transaction Amounts</td><td align="right"><input type="text" name="total" size="12"></td>
+<td> <b> (Must sum to 0.0)</td>
+</tr>
+<tr><td colspan="6" align="center"><input type="button" value="Validate and Submit" onclick="zoop"></td></tr>
+</table>
+</form>
+<form name="xmlform" action="http://disc-nt.cba.uh.edu/Students/parks/echoxml2.asp" method="get">
+<input type="hidden" name="xmlout">
+</form>

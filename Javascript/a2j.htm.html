@@ -1,0 +1,175 @@
+<html>
+<head>
+<script language="javascript">
+<!--
+function check()
+{
+os = "<table border='1' align='center'><tr><td align='center' colspan='5'>JavaScript Report</td></tr>";
+condition="yes";
+/*********************radio button******************************/
+os=os+"<tr><td rowspan='9' align='center'>Radio Buttons</td>"
+radio_button = document.form1.poop.value
+os=os+"<td align='center'>Name of the Radio Button</td><td colspan='2' align='center'>"+document.form1.elements(0).name+"</td></tr>"
+os=os+"<tr><td rowspan='6' colspan='' align='center'>Values of Each Radio Button</td>"
+for (i=0;i<6;i++)
+{val=document.form1.elements(i).value
+os=os+"<td colspan='2' align='center'>"+val+"</td></tr>"
+if (document.form1.elements(i).checked)
+rinput=document.form1.elements(i).value
+if (document.form1.elements(i).defaultChecked)
+dinput=document.form1.elements(i).value}
+os=os+"<tr><td align='center'>The Radio Button Checked at Load Time</td><td colspan='2' align='center'>"+dinput+"</td></tr>"
+os=os+"<tr><td align='center'>The Radio Button Checked by the User</td><td colspan='2' align='center'>"+rinput+"</td></tr>"
+/***************************************************************/
+
+/*********************check box*********************************/	
+check_box1 = document.form1.r1.checked
+check_box2 = document.form1.r2.checked
+check_box3 = document.form1.r3.checked
+check_box4 = document.form1.r4.checked
+box_count=0;
+os=os+"<td rowspan='8' align='center'>Check Boxes</td>"
+os=os+"<td rowspan='4' colspan='1' align='center'>Name of Each Checkboxes </td>"
+for (i=6;i<10;i++)
+{os=os+"<td colspan='2' align='center'>"+document.form1.elements(i).name+"</td></tr>"}
+os=os+"<tr><td rowspan='4' colspan='1' align='center'>Name of the Checkboxes Chosen by the User</td>"
+	if (check_box1)
+	{os=os+"<td colspan='2' align='center'>"+document.form1.r1.name+"</td></tr>";
+	box_count=box_count+1}
+	else
+	{os=os+"<td></td></tr>"}
+	if (check_box2)
+	{os=os+"<td colspan='2' align='center'>"+document.form1.r2.name+"</td></tr>";
+	box_count=box_count+1}
+	else
+	{os=os+"<td></td></tr>"}
+	if (check_box3)
+	{os=os+"<td colspan='2' align='center'>"+document.form1.r3.name+"</td></tr>";
+	box_count=box_count+1}
+	else
+	{os=os+"<td></td></tr>"}
+	if (check_box4)
+	{os=os+"<td colspan='2' align='center'>"+document.form1.r4.name+"</td></tr>";
+	box_count=box_count+1}
+	else
+	{os=os+"<td></td></tr>"}
+	if (box_count==0)
+	{alert("You must check at least one checkbox");
+	condition="no";}
+
+/***************************************************************/
+
+/*********************select box********************************/	
+select_box = document.form1.sb1.value
+init_value = document.form1.sb1.options[0].value
+init_index = document.form1.sb1.options[0].index
+if (select_box == "first")
+	{alert("You must select an option other than the first one");
+	condition="no";}
+else
+os=os+"<td rowspan='11' align='center'>Select Box</td></tr>"
+os=os+"<td rowspan='2' colspan='1' align='center'>Name of the Select Boxes </td></tr>"
+os=os+"<td rowspan='1' colspan='2' align='center'>"+document.form1.sb1.name+"</td></tr>"
+os=os+"<td rowspan='6' colspan='1' align='center'>Name of the Options of Select Boxes and their Values</td></tr>"
+for (i=0;i<5;i++)
+{os=os+"<td align='center'>"+document.form1.sb1.options[i].text+"</td>"
+os=os+"<td align='center'>"+document.form1.sb1.options[i].value +"</td></tr>"}
+os=os+"<td rowspan='1' colspan='1' align='center'>The Index of the Inital Selection and its Value </td>"
+os=os+"<td colspan='1' align='center'>"+init_index+"</td>"
+os=os+"<td colspan='1' align='center'>"+init_value+"</td></tr>"
+os=os+"<td rowspan='1' colspan='1' align='center'>The Index of the Final User's Selection and its Value </td>"
+os=os+"<td colspan='1' align='center'>"+document.form1.sb1.selectedIndex+"</td>"
+os=os+"<td colspan='1' align='center'>"+document.form1.sb1.value+"</td></tr>"
+
+/***************************************************************/
+
+/***********************text box********************************/
+text_box = document.form1.tbox.value
+new_tbox=""
+	for (i=0;i<text_box.length;i++)
+		{letter=text_box.charAt(i);
+			if (letter == "/" || letter == "*" || letter == "\\")
+				{letter="";}				
+		new_tbox = new_tbox+letter;
+		}
+os=os+"<td rowspan='5' align='center'>Text Box</td></tr>"
+os=os+"<td rowspan='1' colspan='1' align='center'>Name of the Text Box</td>"
+os=os+"<td rowspan='1' colspan='2' align='center'>"+document.form1.tbox.name+"</td></tr>"
+os=os+"<td rowspan='1' colspan='1' align='center'>Original Contents and Length</td>"
+os=os+"<td rowspan='1' colspan='1' align='center'>"+document.form1.tbox.defaultValue+"</td>"
+os=os+"<td rowspan='1' colspan='1' align='center'>"+document.form1.tbox.defaultValue.length+"</td></tr>"
+os=os+"<td rowspan='1' colspan='1' align='center'>Contents Before the Edit and Length</td>"
+os=os+"<td rowspan='1' colspan='1' align='center'>"+text_box+"</td>"
+os=os+"<td rowspan='1' colspan='1' align='center'>"+text_box.length+"</td></tr>"
+os=os+"<td rowspan='1' colspan='1' align='center'>Contents after the Edit and Length</td>"
+os=os+"<td rowspan='1' colspan='1' align='center'>"+new_tbox+"</td>"
+os=os+"<td rowspan='1' colspan='1' align='center'>"+new_tbox.length+"</td></tr>"
+/***************************************************************/
+
+/***********************text area*******************************/
+tarea = document.form1.tarea.value
+new_tarea=""
+	for (i=0;i<tarea.length;i++)
+		{letter=tarea.charAt(i)
+			if(letter==" ")
+				{letter="+"}
+		new_tarea = new_tarea+letter;
+		}
+new_tarea=new_tarea.replace(/(\r\n|\n|\r)/gm,"")
+os=os+"<td rowspan='5' align='center'>Text Area</td></tr>"
+os=os+"<td rowspan='1' colspan='1' align='center'>Name of the Text Area</td>"
+os=os+"<td rowspan='1' colspan='2' align='center'>"+document.form1.tarea.name+"</td></tr>"
+os=os+"<td rowspan='1' colspan='1' align='center'>Original Contents and Length</td>"
+os=os+"<td rowspan='1' colspan='1' align='center'>"+document.form1.tarea.defaultValue+"</td>"
+os=os+"<td rowspan='1' colspan='1' align='center'>"+document.form1.tarea.defaultValue.length+"</td></tr>"
+os=os+"<td rowspan='1' colspan='1' align='center'>Contents Before the Edit and Length</td>"
+os=os+"<td rowspan='1' colspan='1' align='center'>"+tarea+"</td>"
+os=os+"<td rowspan='1' colspan='1' align='center'>"+tarea.length+"</td></tr>"
+os=os+"<td rowspan='1' colspan='1' align='center'>Contents after the Edit and Length</td>"
+os=os+"<td rowspan='1' colspan='1' align='center'>"+new_tarea+"</td>"
+os=os+"<td rowspan='1' colspan='1' align='center'>"+new_tarea.length+"</td></tr>"
+/***************************************************************/
+os = os + "</table>"
+/********************Page on the fly****************************/
+if (condition=="yes")
+	{document.open();
+	document.clear();
+	document.write(os);
+	document.close();}
+/***************************************************************/
+
+}
+</script>
+<form name='form1'>
+<center>Assigment 2</center><hr>
+<ul>
+Radio 1<input type="radio" name="poop" value="Radio 1" checked><br>
+Radio 2<input type="radio" name="poop" value="Radio 2"><br>
+Radio 3<input type="radio" name="poop" value="Radio 3"><br>
+Radio 4<input type="radio" name="poop" value="Radio 4"><br>
+Raido 5<input type="radio" name="poop" value="Radio 5"><br>
+Radio 6<input type="radio" name="poop" value="Radio 6"><br>
+<hr>
+Checkbox 1<input type="checkbox" name="r1" value="a"><br>
+Checkbox 2<input type="checkbox" name="r2" value="b"><br>
+Checkbox 3<input type="checkbox" name="r3" value="c"><br>
+Checkbox 4<input type="checkbox" name="r4" value="d"><br>
+<hr>
+Select Box<br><select name=sb1>
+<option value="first">default value
+<option value="second">value 2
+<option value="third">value 3
+<option value="fourth">value 4
+<option value="fifth">value 5</select>
+<hr>
+Textbox
+<br><input type = "text" name="tbox" size ="30" maxlength="30">
+<hr>
+TextArea
+<br><textarea name="tarea" rows="5" cols="40"></textarea><p>
+<input type="button" value="EDIT and REPORT" onClick="check()">
+</form>
+
+</body>
+<head>
+<html>
